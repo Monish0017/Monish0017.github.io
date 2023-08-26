@@ -1,12 +1,15 @@
+// script.js
 const searchInput = document.getElementById('searchInput');
 const searchButton = document.getElementById('searchButton');
 const resultsDiv = document.getElementById('results');
+const detailsDiv = document.getElementById('detailsSection'); // Add this line
 
 searchButton.addEventListener('click', () => {
     const query = searchInput.value.trim();
     if (query === '') return;
 
     resultsDiv.innerHTML = 'Loading...';
+    detailsDiv.innerHTML = ''; // Clear details when performing a new search
 
     fetch(`https://openlibrary.org/search.json?q=${query}`)
         .then(response => response.json())
@@ -16,6 +19,45 @@ searchButton.addEventListener('click', () => {
             resultsDiv.innerHTML = 'An error occurred.';
         });
 });
+
+// Display book details
+function displayBookDetails(bookKey) {
+    detailsDiv.innerHTML = 'Loading details...';
+
+    fetch(`https://openlibrary.org${bookKey}.json`)
+        .then(response => response.json())
+        .then(bookData => {
+            detailsDiv.innerHTML = ''; // Clear loading message
+
+            const detailsContainer = document.createElement('div');
+            detailsContainer.classList.add('details-container');
+
+            const detailsTitle = document.createElement('h2');
+            detailsTitle.textContent = bookData.title;
+
+            const detailsAuthor = document.createElement('p');
+            detailsAuthor.textContent = bookData.author_name
+                ? `Author: ${bookData.author_name.join(', ')}`
+                : 'Author: Unknown';
+
+            const detailsDescription = document.createElement('p'); // Add this line
+            detailsDescription.textContent = bookData.description
+                ? `Description: ${bookData.description}`
+                : 'Description: Not available';
+
+            detailsContainer.appendChild(detailsTitle);
+            detailsContainer.appendChild(detailsAuthor);
+            detailsContainer.appendChild(detailsDescription); // Add this line
+
+            detailsDiv.appendChild(detailsContainer);
+        })
+        .catch(error => {
+            console.error('Error fetching book details:', error);
+            detailsDiv.innerHTML = 'An error occurred while fetching book details.';
+        });
+}
+
+// Rest of your existing code...
 
 // Inside the displayResults function
 function displayResults(docs) {
