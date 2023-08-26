@@ -7,19 +7,21 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <nav class="navigation">
+        <!-- Navigation links here -->
+    </nav>
+
     <div class="container">
         <h1>Book Search App</h1>
-        <input type="text" id="searchInput" placeholder="Enter a keyword...">
-        <button id="searchButton">Search</button>
-        <div id="results" class="results"></div>
-        <h2>Filters</h2>
-        <div id="filters">
-            <label><input type="checkbox" id="filterAuthor"> Author</label>
-            <label><input type="checkbox" id="filterGenre"> Genre</label>
-            <label><input type="checkbox" id="filterYear"> Publication Year</label>
+        <div class="search-module" id="searchSection">
+            <!-- Search inputs and button here -->
         </div>
-        <h2>Top Rated Books</h2>
-        <div id="topRated" class="top-rated"></div>
+        <div class="results" id="resultsSection">
+            <!-- Results will be displayed here -->
+        </div>
+        <div class="details" id="detailsSection">
+            <!-- Details of clicked book will be displayed here -->
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
