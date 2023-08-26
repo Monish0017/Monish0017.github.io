@@ -58,6 +58,26 @@ function displayBookDetails(bookKey) {
 }
 
 // Rest of your existing code...
+const searchInput = document.getElementById('searchInput');
+const searchButton = document.getElementById('searchButton');
+const resultsDiv = document.getElementById('results');
+const detailsDiv = document.getElementById('detailsSection'); // Add this line
+
+searchButton.addEventListener('click', () => {
+    const query = searchInput.value.trim();
+    if (query === '') return;
+
+    resultsDiv.innerHTML = 'Loading...';
+    detailsDiv.innerHTML = ''; // Clear details when performing a new search
+
+    fetch(`https://openlibrary.org/search.json?q=${query}`)
+        .then(response => response.json())
+        .then(data => displayResults(data.docs))
+        .catch(error => {
+            console.error('Error fetching data:', error);
+            resultsDiv.innerHTML = 'An error occurred.';
+        });
+});
 
 // Inside the displayResults function
 function displayResults(docs) {
