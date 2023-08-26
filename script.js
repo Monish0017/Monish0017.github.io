@@ -103,3 +103,49 @@ function fetchTopRatedBooks() {
         });
 }
 
+// script.js
+// Your existing code for fetching and displaying results remains unchanged
+
+function displayBookDetails(bookKey) {
+    detailsDiv.innerHTML = 'Loading details...'; // Show loading message
+
+    fetch(`https://openlibrary.org${bookKey}.json`)
+        .then(response => response.json())
+        .then(bookData => {
+            detailsDiv.innerHTML = ''; // Clear loading message
+
+            const detailsContainer = document.createElement('div');
+            detailsContainer.classList.add('details-container');
+
+            const detailsTitle = document.createElement('h2');
+            detailsTitle.textContent = bookData.title;
+
+            const detailsAuthor = document.createElement('p');
+            detailsAuthor.textContent = bookData.author_name
+                ? `Author: ${bookData.author_name.join(', ')}`
+                : 'Author: Unknown';
+
+            // Additional details
+            const detailsPublished = document.createElement('p');
+            detailsPublished.textContent = bookData.publish_date
+                ? `Published: ${bookData.publish_date}`
+                : 'Published: Unknown';
+
+            const detailsDescription = document.createElement('p');
+            detailsDescription.textContent = bookData.description
+                ? `Description: ${bookData.description}`
+                : 'Description: Not available';
+
+            // Append all details to the detailsContainer
+            detailsContainer.appendChild(detailsTitle);
+            detailsContainer.appendChild(detailsAuthor);
+            detailsContainer.appendChild(detailsPublished);
+            detailsContainer.appendChild(detailsDescription);
+
+            detailsDiv.appendChild(detailsContainer);
+        })
+        .catch(error => {
+            console.error('Error fetching book details:', error);
+            detailsDiv.innerHTML = 'An error occurred while fetching book details.';
+        });
+}
